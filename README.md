@@ -31,6 +31,11 @@ See [verified findings](docs/findings.md) and [installation/removal](docs/instal
 The [upstream-readiness review](docs/upstream.md) records the relevant existing
 Linux driver, remaining integration decisions and submission requirements.
 
+See the [completed work and roadmap](docs/checklist.md) and
+[research index](docs/research/README.md). Existing external Huawei-WMI monitoring
+and model-specific prior art are recorded in the
+[GitHub research results](docs/research/github-model-prior-art.md).
+
 ## Build and verify
 
 Install headers for the running kernel, a matching compiler, make and DKMS.

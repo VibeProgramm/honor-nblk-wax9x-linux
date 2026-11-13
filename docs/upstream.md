@@ -14,6 +14,10 @@ which calls `\GFNS` directly and exports two fan inputs for HONOR **FMI-XX**.
 Its DMI table does not include NBLK-WAX9X. It is a relevant implementation
 precedent, not verified support for this laptop.
 
+The external Huawei-WMI development repository also has generic temperature/fan
+monitoring predating this project. Its exact-model quirks and the older public
+NBLK EC map are documented in the [prior-art research](research/github-model-prior-art.md).
+
 Before preparing a series, discuss the appropriate home for this support:
 
 - Extend the existing HONOR hwmon driver with a verified model profile.
