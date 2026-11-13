@@ -39,6 +39,19 @@ installation instructions now specify that mode explicitly and use privileged
 DKMS diagnostics. The source review established the channel-recovery behavior
 from control flow; no live firmware fault was injected.
 
+Two fresh automated reviewers then examined the complete project and fixes at
+commit `b1640e7e23a97a188dae215a0bed77a767d0dc2b`:
+
+| Review axis | Confirmed outstanding findings |
+| --- | --- |
+| Coding standards and Linux correctness | 0 |
+| Project requirements and behavior | 0 |
+
+Both confirmed the channel-loss fix. The requirements reviewer independently
+checked installed source/permissions and repeated the read-only hardware test,
+including 896 concurrent sensor reads. This records the review outcome, not
+proof of correctness for untested scenarios or upstream acceptance.
+
 ## Before submission
 
 The [hwmon submission guide](https://github.com/torvalds/linux/blob/2800868f63227c8237d70c41e70d441c919620d6/Documentation/hwmon/submitting-patches.rst)
