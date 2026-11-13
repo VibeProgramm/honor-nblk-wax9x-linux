@@ -76,9 +76,59 @@ active and boost is enabled. Those three entries do not describe a Turbo ceiling
 There is no `_CPC` in the supplied tables; adding a name cannot implement CPPC.
 
 EC event handlers transfer power and temperature policy through AMD ALIB.
-Observed EC policy fields and actual active SMU limits must be distinguished.
-Detailed local power evidence lives in `analysis/power/` and is not published
-as raw logs.
+The observed EC policy inputs were `FAPO=30`, `SLPO=25`, `SUPO=25`, `SSWS=22`,
+and `TCTL=0`. `_Q60` submits Fast PPT, Slow PPT and STAPM from the first three
+fields; `_Q52` and `_Q53` submit STAPM from `SSWS`; `_Q62` submits the temperature
+parameter from `TCTL`. These inputs alone do not establish the active limits.
+
+### Active SMU limits on AC
+
+Two PM-table snapshots and two RyzenAdj `--info` readings on 2026-11-14 agreed
+on these SMU-reported settings. The AC adapter was connected and the battery
+was charging throughout the measurement session.
+
+| Parameter | Reported setting |
+| --- | --- |
+| STAPM limit | 25 W |
+| PPT Fast limit | 30 W |
+| PPT Slow limit | 25 W |
+| Core temperature limit | 92 °C |
+| TDC VDD / SoC | 35 / 10 A |
+| EDC VDD / SoC | 52 / 13 A |
+| STAPM time constant | 100 s |
+| Slow PPT time constant | 5 s |
+
+Thus active STAPM was 25 W despite `SSWS=22`, and the reported temperature
+limit was 92 °C despite `TCTL=0`. The last policy-setting event was not observed.
+The time constants are not guaranteed boost durations. These are snapshots of
+configured limits, not a measurement of sustained power or enforcement under
+load. DC operation, raising limits, firmware ceilings and cooling headroom
+were not tested.
+
+The initial `/dev/mem` backend failed with `EPERM` for both `mmap` and `pread`.
+A temporary `ryzen_smu` module provided the supported alternative PM-table
+backend without changing kernel memory-access protections. The audited
+initialization/monitoring path requests versions, addresses and telemetry
+transfers; no limit-setting commands were requested. The driver itself also
+provides writable command interfaces and is not a read-only driver. It was
+unloaded after the measurements, with no DKMS installation or autoload entry.
+
+Verified versions:
+
+- RyzenAdj v0.19.0, commit `5775fc3e6dbb25c7030ee2d100a1bdd6e8bf2d0a`.
+- `amkillam/ryzen_smu`, interface 0.1.7, commit
+  `d2983668300dd2a598e5a7dc40e71ce0678cc270`.
+- SMU firmware 4.30.68.51, BIOS interface 19, PM-table version `0x1e0004`.
+- Temporary module built with LLVM and tested on `7.3.3-1-cachyos`.
+
+Both saved 1,708-byte tables were independently decoded as little-endian
+float32 values and matched the CLI output. Limit offsets were `0x000`, `0x008`,
+`0x010` (STAPM/Fast/Slow), `0x018`, `0x020` (TDC VDD/SoC), `0x028`, `0x034`
+(EDC VDD/SoC), and `0x058` (core temperature); time constants were at `0x5e0`
+and `0x5e4`. These offsets apply to the verified table version only. CLI entries
+reported as `nan` were not interpreted as zero or as supported measurements.
+Detailed local power evidence lives in `analysis/power/`; raw logs and binary
+snapshots are excluded from publication.
 
 ## Firmware and coreboot
 
@@ -107,4 +157,6 @@ independent determination of BIOS signature enforcement.
 - [Huawei-WMI development driver](https://github.com/aymanbagabas/Huawei-WMI)
 - [AMD P-state requirements](https://docs.kernel.org/admin-guide/pm/amd-pstate.html)
 - [RyzenAdj supported models](https://github.com/FlyGoat/RyzenAdj/wiki/Supported-Models)
+- [Verified RyzenAdj source](https://github.com/FlyGoat/RyzenAdj/tree/5775fc3e6dbb25c7030ee2d100a1bdd6e8bf2d0a)
+- [Verified ryzen_smu source](https://github.com/amkillam/ryzen_smu/tree/d2983668300dd2a598e5a7dc40e71ce0678cc270)
 - [coreboot AMD Family 17h boot flow](https://doc.coreboot.org/soc/amd/family17h.html)
