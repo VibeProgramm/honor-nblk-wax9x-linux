@@ -44,7 +44,6 @@ struct honor_data {
 	/* Protects cached samples and the system-sleep state. */
 	struct mutex lock;
 	struct honor_sample samples[SENSOR_COUNT];
-	bool present[SENSOR_COUNT];
 	bool suspended;
 };
 
@@ -134,17 +133,15 @@ out:
 static umode_t honor_is_visible(const void *drvdata,
 				enum hwmon_sensor_types type, u32 attr, int channel)
 {
-	const struct honor_data *data = drvdata;
-
 	switch (type) {
 	case hwmon_chip:
 		return attr == hwmon_chip_update_interval ? 0444 : 0;
 	case hwmon_temp:
-		if (channel < 0 || channel >= TEMP_COUNT || !data->present[channel])
+		if (channel < 0 || channel >= TEMP_COUNT)
 			return 0;
 		return attr == hwmon_temp_input || attr == hwmon_temp_label ? 0444 : 0;
 	case hwmon_fan:
-		if (channel != 0 || !data->present[FAN_INDEX])
+		if (channel != 0)
 			return 0;
 		return attr == hwmon_fan_input || attr == hwmon_fan_label ? 0444 : 0;
 	default:
@@ -242,8 +239,6 @@ static int honor_probe(struct platform_device *pdev)
 	struct device *dev = &pdev->dev;
 	struct honor_data *data;
 	struct device *hwmon;
-	long value;
-	int i, count = 0, err;
 
 	data = devm_kzalloc(dev, sizeof(*data), GFP_KERNEL);
 	if (!data)
@@ -255,26 +250,13 @@ static int honor_probe(struct platform_device *pdev)
 
 	mutex_init(&data->lock);
 	platform_set_drvdata(pdev, data);
-	mutex_lock(&data->lock);
-	for (i = 0; i < SENSOR_COUNT; i++) {
-		err = honor_sample(data, i, &value);
-		if (!err) {
-			data->present[i] = true;
-			count++;
-		} else {
-			dev_warn(dev, "Sensor %d unavailable: %d\n", i, err);
-		}
-	}
-	mutex_unlock(&data->lock);
-	if (!count)
-		return -ENODEV;
 
 	hwmon = devm_hwmon_device_register_with_info(dev, DRV_NAME, data,
 						     &honor_chip_info, NULL);
 	if (IS_ERR(hwmon))
 		return PTR_ERR(hwmon);
 
-	dev_info(dev, "Registered %d read-only EC sensors\n", count);
+	dev_info(dev, "Registered %d read-only EC sensors\n", SENSOR_COUNT);
 	return 0;
 }
 
@@ -306,4 +288,4 @@ module_exit(honor_exit);
 
 MODULE_DESCRIPTION("Read-only ACPI EC telemetry for HONOR NBLK-WAX9X");
 MODULE_LICENSE("GPL");
-MODULE_VERSION("0.1.0");
+MODULE_VERSION("0.1.1");

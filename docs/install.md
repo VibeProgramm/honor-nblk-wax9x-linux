@@ -22,15 +22,28 @@ headers. On Arch/CachyOS, use the appropriate `linux-headers`,
 From the repository root:
 
 ```sh
-sudo install -d /usr/src/honor-acpi-hwmon-0.1.0
+sudo install -d -m 755 /usr/src/honor-acpi-hwmon-0.1.1
 sudo install -m 644 honor-acpi-hwmon/honor_acpi_hwmon.c \
     honor-acpi-hwmon/Makefile honor-acpi-hwmon/dkms.conf \
-    /usr/src/honor-acpi-hwmon-0.1.0/
-sudo dkms add -m honor-acpi-hwmon -v 0.1.0
-sudo dkms install -m honor-acpi-hwmon -v 0.1.0 -k "$(uname -r)"
+    /usr/src/honor-acpi-hwmon-0.1.1/
+sudo dkms add -m honor-acpi-hwmon -v 0.1.1
+sudo dkms install -m honor-acpi-hwmon -v 0.1.1 -k "$(uname -r)"
 sudo modprobe honor_acpi_hwmon
 sensors honor_acpi_hwmon-isa-0000
 ```
+
+When upgrading an already loaded version, unload it after the new DKMS build
+has installed successfully, then load the installed build:
+
+```sh
+sudo modprobe -r honor_acpi_hwmon
+sudo modprobe honor_acpi_hwmon
+cat /sys/module/honor_acpi_hwmon/version
+```
+
+The loaded version should be `0.1.1`. Keep the previous DKMS version available
+until verification succeeds, then remove its registration and source directory
+using that previous version number.
 
 For another installed kernel, repeat `dkms install` with its release.
 `AUTOINSTALL=yes` enables rebuilding through DKMS's normal kernel-update hooks.
@@ -50,7 +63,7 @@ system did not enforce signatures.
 ```sh
 python3 honor-acpi-hwmon/verify_hwmon.py
 sudo python3 honor-acpi-hwmon/verify_hwmon.py --compare-wmi
-dkms status -m honor-acpi-hwmon
+sudo dkms status -m honor-acpi-hwmon
 modinfo -F filename honor_acpi_hwmon
 ```
 
@@ -69,8 +82,8 @@ be described as runtime-verified until those tests are done.
 ```sh
 sudo rm /etc/modules-load.d/honor-acpi-hwmon.conf
 sudo modprobe -r honor_acpi_hwmon
-sudo dkms remove -m honor-acpi-hwmon -v 0.1.0 --all
-sudo rm -r /usr/src/honor-acpi-hwmon-0.1.0
+sudo dkms remove -m honor-acpi-hwmon -v 0.1.1 --all
+sudo rm -r /usr/src/honor-acpi-hwmon-0.1.1
 ```
 
 These paths belong to this supplemental module. Stock battery/hotkey support
