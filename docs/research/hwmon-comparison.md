@@ -14,9 +14,12 @@ represented. Existing generic monitoring predates this project: see
 [Huawei-WMI's January 2024 addition](https://github.com/aymanbagabas/Huawei-WMI/commit/85f09851d0dce76f063ad7fe359be6780510b7f1).
 
 The external project is broader in platform functionality; this conclusion is
-specific to verified monitoring on this laptop. The external driver was
-inspected, not installed or runtime-tested here. Stock and external Huawei-WMI
-must not be confused.
+specific to verified monitoring on this laptop. The initial comparison was
+source-only. A later explicitly requested
+[external-driver deployment](../install.md#external-huawei-wmi-deployment) tested
+this same external revision on the running CachyOS kernel, restoring the timeout
+interface while retaining our hwmon module. Stock and external Huawei-WMI must
+not be confused; this is not runtime validation of every external feature.
 
 ## Comparison
 

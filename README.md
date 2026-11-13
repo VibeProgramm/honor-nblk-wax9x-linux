@@ -28,6 +28,13 @@ Our [implementation comparison](docs/research/hwmon-comparison.md) records the
 reasons for retaining this validated model-specific module. Fan-control
 prerequisites are tracked [separately](docs/research/fan-control.md).
 
+The tested machine now also uses external Huawei-WMI `master.1ae8fb55` in
+place of the in-tree platform driver to restore `kbdlight_timeout`. Our
+read-only hwmon module remains loaded. The C source is unchanged upstream code;
+DKMS builds and kernel-update hooks were checked for all three installed kernel
+packages. See [deployment and rollback](docs/install.md#external-huawei-wmi-deployment)
+for the known duplicate/unsupported sensor attributes and runtime-test limits.
+
 This is a hardware-validated development project, not an upstream kernel
 submission. A future upstream change should evaluate integrating monitoring
 with the existing HONOR hwmon or Huawei platform driver and supporting other
