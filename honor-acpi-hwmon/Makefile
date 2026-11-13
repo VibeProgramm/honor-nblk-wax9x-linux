@@ -1,4 +1,4 @@
-ifneq ($(KERNELRELEASE),)
+ifneq ($(KBUILD_EXTMOD),)
 obj-m := honor_acpi_hwmon.o
 else
 KDIR ?= /lib/modules/$(shell uname -r)/build

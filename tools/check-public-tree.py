@@ -8,7 +8,7 @@ ALLOWED = {
     '.gitignore', 'LICENSE', 'README.md',
     'honor-acpi-hwmon/Makefile', 'honor-acpi-hwmon/dkms.conf',
     'honor-acpi-hwmon/honor_acpi_hwmon.c', 'honor-acpi-hwmon/verify_hwmon.py',
-    'tools/check-public-tree.py',
+    'tools/check-public-tree.py', 'tools/check-stock-wmi.py',
 }
 PATTERNS = {
     'OEM product key': rb'\b(?:[A-Z0-9]{5}-){4}[A-Z0-9]{5}\b',

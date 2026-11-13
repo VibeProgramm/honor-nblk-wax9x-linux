@@ -25,6 +25,8 @@ This is a hardware-validated development project, not an upstream kernel
 submission. A future upstream change should evaluate integrating monitoring
 with the existing Huawei driver and supporting other verified firmware layouts.
 
+See [verified findings](docs/findings.md) and [installation/removal](docs/install.md).
+
 ## Build and verify
 
 Install headers for the running kernel, a matching compiler, make and DKMS.
@@ -54,6 +56,17 @@ the EC getters, WMI dispatch, AMD power-limit callbacks and a VFCT VBIOS image.
 Generated analysis and firmware images are local artifacts outside Git.
 The project records reproducible findings and source code rather than OEM
 license data, per-device identifiers or firmware binaries.
+
+Before each publication, stage only the intended sources and run:
+
+```sh
+python3 tools/check-public-tree.py
+git diff --cached --check
+git diff --cached
+```
+
+The allowlist/content check supplements manual review; it is not a guarantee
+that arbitrary additions are free of private data.
 
 ## License
 
