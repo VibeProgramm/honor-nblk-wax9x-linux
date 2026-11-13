@@ -11,10 +11,11 @@ It calls the existing ACPI `GTMP` and `GFNS` getters. The firmware's WMI
 dispatcher forwards the corresponding commands to these same methods.
 
 The module is restricted to the verified DMI model and BIOS version. It caches
-each reading for one second, serializes its requests, validates firmware
-responses, and invalidates the cache on resume. Every sensor attribute is
-read-only. Temperature labels retain the firmware's names where physical
-sensor placement is not established.
+each reading or error for one second, serializes its requests, validates firmware
+responses, and invalidates the cache on resume. All seven channels remain exposed
+when a reading fails; the next read after cache expiry retries the getter. Every
+sensor attribute is read-only. Temperature labels retain the firmware's names
+where physical sensor placement is not established.
 
 The existing in-tree `huawei-wmi` driver provides battery charge thresholds,
 Fn-lock, hotkeys and mic-mute LED support. Standard ACPI battery support already
@@ -23,9 +24,12 @@ the missing temperature/fan channels alongside those existing drivers.
 
 This is a hardware-validated development project, not an upstream kernel
 submission. A future upstream change should evaluate integrating monitoring
-with the existing Huawei driver and supporting other verified firmware layouts.
+with the existing HONOR hwmon or Huawei platform driver and supporting other
+verified firmware layouts.
 
 See [verified findings](docs/findings.md) and [installation/removal](docs/install.md).
+The [upstream-readiness review](docs/upstream.md) records the relevant existing
+Linux driver, remaining integration decisions and submission requirements.
 
 ## Build and verify
 

@@ -46,6 +46,12 @@ so its regular polling does not consume or interleave WMI dispatcher calls.
   and `6.18.63-2-lts`. Runtime testing used `7.3.3-1-cachyos` only.
 - Kernel checkpatch `--strict`: no errors, warnings or checks.
 
+The DKMS builds/installations, installed-module reload, WMI comparison and
+896 concurrent sensor reads were repeated successfully for version 0.1.1.
+This version fixes permanent channel hiding after a failed initial reading;
+see the [upstream review record](upstream.md). Actual firmware fault injection,
+suspend/resume and reboot remain untested.
+
 Example readings: CPU EC 54 °C, TSLO 45 °C, TNTC 50 °C, CNTC 54 °C,
 DNTC 49 °C, battery 37 °C, fan 3511 RPM. These are observations, not limits.
 
