@@ -91,15 +91,20 @@ exercised by this investigation.
 
 ### Prioritized candidates
 
-- [ ] Compare our model-specific implementation with external Huawei-WMI and
-  retain demonstrably useful ideas from both; keep compatibility claims scoped
-  to tested hardware. **Comparison in progress.**
+- [x] Compare our implementation with external Huawei-WMI and retain useful
+  existing knowledge. [Decision](research/hwmon-comparison.md): keep verified
+  0.1.1; no beneficial C-code transplant was identified for this BIOS.
+- [ ] Add an automated kernel-build matrix using matching toolchains and prepared
+  headers/Module.symvers, without suppressing unresolved-symbol failures.
 - [ ] Evaluate the existing matebook-applet for charge/Fn-lock controls; add a
   focused CLI or telemetry view only for useful functionality it does not cover.
 - [ ] Add reproducible SMU AC/DC measurements and evaluate power presets from data.
 - [ ] Investigate the keyboard-backlight quirk on this exact HONOR firmware.
 - [ ] Evaluate fan-control feasibility only after identifying its actual firmware
   contract; other models' EC offsets and setters are not compatibility evidence.
+- [x] Inspect the available AML for fan-control entry points and record the
+  [specific blocker and implementation path](research/fan-control.md): no usable
+  setter or automatic-mode restoration contract has been established.
 
 Fingerprint patches and desktop-specific fixes found during research are listed
 in the [prior-art report](research/github-model-prior-art.md). Their presence

@@ -22,6 +22,12 @@ Fn-lock, hotkeys and mic-mute LED support. Standard ACPI battery support already
 exposes battery current and voltage, including via hwmon. The new module adds
 the missing temperature/fan channels alongside those existing drivers.
 
+The external Huawei-WMI development project has offered generic GTMP/GFNS
+monitoring since [January 2024](https://github.com/aymanbagabas/Huawei-WMI/commit/85f09851d0dce76f063ad7fe359be6780510b7f1).
+Our [implementation comparison](docs/research/hwmon-comparison.md) records the
+reasons for retaining this validated model-specific module. Fan-control
+prerequisites are tracked [separately](docs/research/fan-control.md).
+
 This is a hardware-validated development project, not an upstream kernel
 submission. A future upstream change should evaluate integrating monitoring
 with the existing HONOR hwmon or Huawei platform driver and supporting other

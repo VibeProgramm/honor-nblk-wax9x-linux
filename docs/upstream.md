@@ -17,6 +17,8 @@ precedent, not verified support for this laptop.
 The external Huawei-WMI development repository also has generic temperature/fan
 monitoring predating this project. Its exact-model quirks and the older public
 NBLK EC map are documented in the [prior-art research](research/github-model-prior-art.md).
+The [implementation comparison](research/hwmon-comparison.md) recommends first
+discussing an NBLK profile in `honor-fmi`, preserving its existing FMI-XX behavior.
 
 Before preparing a series, discuss the appropriate home for this support:
 
@@ -29,6 +31,11 @@ on a similar model name. The audited NBLK getters accept the current eight-byte
 request; another model's buffer layout, fan count and EC locking must be checked
 independently. The stock WMI two-call concurrency finding is a separate bug and
 should have a separate reproducer and patch.
+
+If a WMI transport is selected, verify locking of complete logical commands,
+including interaction with raw debugfs. The external development revision has a
+source-level interleaving window; the hardware reproduction recorded here was
+performed against the stock driver. Those two evidence levels remain distinct.
 
 ## Review findings addressed in 0.1.1
 

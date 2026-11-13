@@ -11,6 +11,8 @@ local execution logs are excluded from Git.
 | CPU power policy and SMU | [Active limits on AC](../findings.md#active-smu-limits-on-ac) | Two independently decoded snapshots; EC inputs distinguished from active limits; DC/load/raising limits untested |
 | Firmware and coreboot | [Firmware findings](../findings.md#firmware-and-coreboot) | VBIOS validated; full SPI read blocked; board port and PSB feasibility unresolved |
 | Existing GitHub implementations | [Model-specific prior art](github-model-prior-art.md) | Existing NBLK code/materials found; exact HONOR BIOS 3.07 compatibility not established by third-party reports |
+| Two hwmon implementations | [Source-level comparison](hwmon-comparison.md) | Keep verified 0.1.1; useful protocol knowledge already represented; external runtime not tested here |
+| Fan-control feasibility | [Firmware findings and implementation path](fan-control.md) | Tachometer getter confirmed; no usable setter/automatic-restoration contract identified |
 | Linux standards and submission | [Upstream review](../upstream.md) | Code review/fix/review completed; final in-tree series and maintainer decisions remain |
 
 The [checklist](../checklist.md) separates completed work, remaining verification,

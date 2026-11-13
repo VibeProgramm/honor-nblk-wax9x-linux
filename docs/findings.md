@@ -27,6 +27,12 @@ BTMP respectively. Physical placement of the four middle sensors is unknown.
 Fan selector 1 returned zero; a second physical fan was not established and
 is not exported by this model-specific module.
 
+The external Huawei-WMI development driver's generic eleven-temperature/two-fan
+attribute set is broader than this verified model's capabilities. Its HUAWEI
+NBLK quirk does not establish HONOR BIOS 3.07 hwmon compatibility. See the
+[selector mapping](research/hwmon-comparison.md#selector-mapping) when comparing
+channels: temperature numbering differs between implementations.
+
 Battery `current_now` and `voltage_now` work on battery power and while charging
 from AC. The standard BAT1 hwmon device also exposes current and voltage.
 AC connection alone does not imply zero current: charging state matters.
