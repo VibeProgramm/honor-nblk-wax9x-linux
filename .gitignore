@@ -1,0 +1,19 @@
+# Original firmware dumps and locally generated hardware evidence.
+/*.dat
+/*.dsl
+/*.aml
+/*.pre
+/methods.txt
+/analysis/
+
+# Kernel build products.
+*.o
+*.ko
+*.mod
+*.mod.c
+*.cmd
+*.order
+*.symvers
+.*.d
+.tmp_versions/
+__pycache__/
